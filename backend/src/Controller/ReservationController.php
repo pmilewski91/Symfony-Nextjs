@@ -5,6 +5,7 @@ namespace App\Controller;
 use App\Entity\Reservation;
 use App\Repository\ReservationRepository;
 use App\Repository\RoomRepository;
+use App\Service\NotificationService;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\JsonResponse;
@@ -21,7 +22,8 @@ class ReservationController extends AbstractController
         private SerializerInterface $serializer,
         private RoomRepository $roomRepository,
         private EntityManagerInterface $entityManager,
-        private ValidatorInterface $validator
+        private ValidatorInterface $validator,
+        private NotificationService $notificationService
     ) {
     }
 
@@ -195,6 +197,9 @@ class ReservationController extends AbstractController
             // Save to database
             $this->entityManager->persist($reservation);
             $this->entityManager->flush();
+
+            // Send notification about new reservation to RabbitMQ
+            $this->notificationService->sendReservationCreatedNotification($reservation);
 
             // Serialize and return the created reservation
             $data = $this->serializer->serialize($reservation, 'json', [

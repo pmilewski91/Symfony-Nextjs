@@ -50,7 +50,7 @@ services:
     environment:
       APP_ENV: dev
       DATABASE_URL: postgresql://postgres:postgres@postgres:5432/conference_booking?serverVersion=15&charset=utf8
-      MESSENGER_TRANSPORT_DSN: doctrine://default?auto_setup=0
+      MESSENGER_TRANSPORT_DSN: amqp://admin:admin@rabbitmq:5672/%2f/messages
       RABBITMQ_URL: amqp://admin:admin@rabbitmq:5672/
       CORS_ALLOW_ORIGIN: http://localhost:3000
     ports:

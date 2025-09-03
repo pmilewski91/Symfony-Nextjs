@@ -10,7 +10,8 @@ RUN apk add --no-cache \
     libpng-dev \
     libxml2-dev \
     libzip-dev \
-    linux-headers
+    linux-headers \
+    rabbitmq-c-dev
 
 # Install PHP extensions
 RUN docker-php-ext-install \
@@ -19,6 +20,12 @@ RUN docker-php-ext-install \
     zip \
     xml \
     sockets
+
+# Install AMQP extension
+RUN apk add --no-cache $PHPIZE_DEPS \
+    && pecl install amqp \
+    && docker-php-ext-enable amqp \
+    && apk del $PHPIZE_DEPS
 
 # Install Composer
 COPY --from=composer:latest /usr/bin/composer /usr/bin/composer
