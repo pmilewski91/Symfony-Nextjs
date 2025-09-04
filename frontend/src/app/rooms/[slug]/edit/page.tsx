@@ -4,23 +4,8 @@ import { useState, useEffect } from "react";
 import { useRouter, useParams } from "next/navigation";
 import { Button, Input, Select, ErrorMessage, Loading } from "@/components/ui";
 import axios from "axios";
+import { Room, ValidationErrors, FormData } from "@/types/interferance";
 
-interface FormData {
-  name: string;
-  description: string;
-  isActive: boolean;
-}
-
-interface ValidationErrors {
-  [key: string]: string[];
-}
-
-interface Room {
-  id: number;
-  name: string;
-  description?: string | null;
-  isActive: boolean;
-}
 
 export default function EditRoomPage() {
   const router = useRouter();

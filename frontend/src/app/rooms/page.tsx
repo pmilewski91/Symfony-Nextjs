@@ -4,16 +4,11 @@ import { useState, useEffect } from "react";
 import { useRouter } from "next/navigation";
 import { Button } from "@/components/ui";
 import axios from "axios";
+import { Room } from "@/types/interferance";
 
 export default function HomePage() {
   const router = useRouter();
   
-  type Room = {
-    id: number;
-    name: string;
-    description?: string | null;
-    isActive: boolean;
-  };
 
   const [rooms, setRooms] = useState<Room[]>([]);
   const [isLoading, setIsLoading] = useState(true);
