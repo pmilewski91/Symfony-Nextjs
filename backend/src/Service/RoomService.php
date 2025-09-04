@@ -174,7 +174,7 @@ class RoomService
         // Check if room has any reservations
         $reservations = $room->getReservations();
         if (!$reservations->isEmpty()) {
-            throw new ReservationConflictException($id, $reservations->count());
+            throw new ReservationConflictException($id, null, 'delete_conflict', null, $reservations->count());
         }
 
         // Remove the room from database
