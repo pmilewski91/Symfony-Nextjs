@@ -62,7 +62,9 @@ class ReservationService
                 $queryBuilder->andWhere('r.startDateTime >= :dateFrom')
                     ->setParameter('dateFrom', $dateFromObj);
             } catch (\Exception $e) {
-                throw new ValidationException('Invalid date_from format. Use Y-m-d H:i:s or Y-m-d');
+                $exception = new ValidationException('Invalid date_from format. Use Y-m-d H:i:s or Y-m-d');
+                $exception->addViolation('date_from', 'Invalid date_from format. Use Y-m-d H:i:s or Y-m-d');
+                throw $exception;
             }
         }
 
@@ -72,7 +74,9 @@ class ReservationService
                 $queryBuilder->andWhere('r.endDateTime <= :dateTo')
                     ->setParameter('dateTo', $dateToObj);
             } catch (\Exception $e) {
-                throw new ValidationException('Invalid date_to format. Use Y-m-d H:i:s or Y-m-d');
+                $exception = new ValidationException('Invalid date_to format. Use Y-m-d H:i:s or Y-m-d');
+                $exception->addViolation('date_to', 'Invalid date_to format. Use Y-m-d H:i:s or Y-m-d');
+                throw $exception;
             }
         }
 
@@ -103,7 +107,9 @@ class ReservationService
             $data = json_decode($request->getContent(), true);
             
             if (!$data) {
-                throw new ValidationException('Invalid JSON data provided');
+                $exception = new ValidationException('Invalid JSON data provided');
+                $exception->addViolation('request', 'Invalid JSON data provided');
+                throw $exception;
             }
 
             // Validate required fields
@@ -144,7 +150,10 @@ class ReservationService
                 $startDateTime = new \DateTime($data['start_date_time']);
                 $endDateTime = new \DateTime($data['end_date_time']);
             } catch (\Exception $e) {
-                throw new ValidationException('Invalid date format. Use Y-m-d H:i:s format');
+                $exception = new ValidationException('Invalid date format. Use Y-m-d H:i:s format');
+                $exception->addViolation('start_date_time', 'Invalid date format. Use Y-m-d H:i:s format');
+                $exception->addViolation('end_date_time', 'Invalid date format. Use Y-m-d H:i:s format');
+                throw $exception;
             }
 
             // Check for conflicting reservations
@@ -252,7 +261,9 @@ class ReservationService
                     $queryBuilder->andWhere('r.startDateTime >= :dateFrom')
                         ->setParameter('dateFrom', $dateFromObj);
                 } catch (\Exception $e) {
-                    throw new ValidationException('Invalid date_from format. Use Y-m-d H:i:s or Y-m-d');
+                    $exception = new ValidationException('Invalid date_from format. Use Y-m-d H:i:s or Y-m-d');
+                    $exception->addViolation('date_from', 'Invalid date_from format. Use Y-m-d H:i:s or Y-m-d');
+                    throw $exception;
                 }
             }
 
@@ -262,7 +273,9 @@ class ReservationService
                     $queryBuilder->andWhere('r.endDateTime <= :dateTo')
                         ->setParameter('dateTo', $dateToObj);
                 } catch (\Exception $e) {
-                    throw new ValidationException('Invalid date_to format. Use Y-m-d H:i:s or Y-m-d');
+                    $exception = new ValidationException('Invalid date_to format. Use Y-m-d H:i:s or Y-m-d');
+                    $exception->addViolation('date_to', 'Invalid date_to format. Use Y-m-d H:i:s or Y-m-d');
+                    throw $exception;
                 }
             }
 

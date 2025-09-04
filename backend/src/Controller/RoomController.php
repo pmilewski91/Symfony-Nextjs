@@ -75,6 +75,34 @@ class RoomController extends AbstractController
     }
 
     /**
+     * Get a single room by ID
+     *
+     * @param int $id
+     * 
+     * @return JsonResponse
+     * 
+     */
+    #[Route('/{id}', name: 'show', methods: ['GET'])]
+    public function show(int $id): JsonResponse
+    {
+        try {
+            $data = $this->roomService->getById($id);
+
+            return new JsonResponse(
+                data: json_decode($data, true),
+                status: 200
+            );
+        } catch (RoomNotFoundException $e) {
+            return $this->json(['error' => $e->getMessage()], 404);
+        } catch (\Exception $e) {
+            return new JsonResponse([
+                'error' => 'Failed to fetch room',
+                'message' => $e->getMessage()
+            ], 500);
+        }
+    }
+
+    /**
      * Update an existing room
      *
      * @param int $id

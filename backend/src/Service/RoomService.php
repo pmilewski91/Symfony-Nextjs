@@ -51,6 +51,27 @@ class RoomService
     }
 
     /**
+     * Get a single room by ID
+     * 
+     * @param int $id Room ID
+     * @return string JSON serialized room data
+     * @throws RoomNotFoundException
+     */
+    public function getById(int $id): string
+    {
+        $room = $this->roomRepository->find($id);
+        
+        if (!$room) {
+            throw new RoomNotFoundException($id);
+        }
+        
+        // Serialize the room data
+        return $this->serializer->serialize($room, 'json', [
+            'groups' => ['room:read']
+        ]);
+    }
+
+    /**
      * Create a new room
      *
      * @param Request $request
@@ -64,14 +85,18 @@ class RoomService
         $data = json_decode($request->getContent(), true);
         
         if (!$data) {
-            throw new ValidationException('Invalid JSON data provided');
+            $exception = new ValidationException('Invalid JSON data provided');
+            $exception->addViolation('request', 'Invalid JSON data provided');
+            throw $exception;
         }
 
         // Check if room with this name already exists
         if (isset($data['name'])) {
             $existingRoom = $this->roomRepository->findByName($data['name']);
             if ($existingRoom) {
-                throw new ValidationException('Room with this name already exists');
+                $exception = new ValidationException('Room with this name already exists');
+                $exception->addViolation('name', 'Room with this name already exists');
+                throw $exception;
             }
         }
 
@@ -136,14 +161,18 @@ class RoomService
         $data = json_decode($request->getContent(), true);
 
         if (!$data) {
-            throw new ValidationException('Invalid JSON data provided');
+            $exception = new ValidationException('Invalid JSON data provided');
+            $exception->addViolation('request', 'Invalid JSON data provided');
+            throw $exception;
         }
 
         // Check if room name is being changed and if new name already exists
         if (isset($data['name']) && $data['name'] !== $room->getName()) {
             $existingRoom = $this->roomRepository->findByName($data['name']);
             if ($existingRoom) {
-                throw new ValidationException('Room with this name already exists');
+                $exception = new ValidationException('Room with this name already exists');
+                $exception->addViolation('name', 'Room with this name already exists');
+                throw $exception;
             }
         }
 
