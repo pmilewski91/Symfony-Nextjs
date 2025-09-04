@@ -12,6 +12,9 @@ use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Serializer\SerializerInterface;
 
+/**
+ * [RoomService] Service class to handle business logic related to Room entity
+ */
 class RoomService
 {
     public function __construct(
@@ -47,6 +50,14 @@ class RoomService
         return $data;
     }
 
+    /**
+     * Create a new room
+     *
+     * @param Request $request
+     * 
+     * @return string
+     * 
+     */
     public function create(Request $request): string
     {
         // Get JSON data from request
@@ -103,6 +114,15 @@ class RoomService
     }
 
 
+    /**
+     * Update an existing room
+     *
+     * @param int $id
+     * @param Request $request
+     * 
+     * @return string
+     * 
+     */
     public function update(int $id, Request $request): string
     {
         // Find the room by ID
@@ -162,6 +182,14 @@ class RoomService
         ]);
     }
 
+    /**
+     * Delete a room
+     *
+     * @param int $id
+     * 
+     * @return Room
+     * 
+     */
     public function delete(int $id): Room
     {
         // Find the room by ID

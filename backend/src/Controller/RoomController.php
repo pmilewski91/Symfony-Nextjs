@@ -11,7 +11,9 @@ use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Routing\Attribute\Route;
 
-
+/**
+ * [RoomController] Controller class to handle HTTP requests related to Room entity
+ */
 #[Route('/api/v1/rooms', name: 'api_rooms_')]
 class RoomController extends AbstractController
 {
@@ -19,6 +21,14 @@ class RoomController extends AbstractController
         private RoomService $roomService
     ) {}
 
+    /**
+     * Get a list of rooms
+     *
+     * @param Request $request
+     * 
+     * @return JsonResponse
+     * 
+     */
     #[Route('', name: 'list', methods: ['GET'])]
     public function list(Request $request): JsonResponse
     {
@@ -37,6 +47,14 @@ class RoomController extends AbstractController
         }
     }
 
+    /**
+     * Create a new room
+     *
+     * @param Request $request
+     * 
+     * @return JsonResponse
+     * 
+     */
     #[Route('', name: 'create', methods: ['POST'])]
     public function create(Request $request): JsonResponse
     {
@@ -56,6 +74,15 @@ class RoomController extends AbstractController
         }
     }
 
+    /**
+     * Update an existing room
+     *
+     * @param int $id
+     * @param Request $request
+     * 
+     * @return JsonResponse
+     * 
+     */
     #[Route('/{id}', name: 'update', methods: ['PUT'])]
     public function update(int $id, Request $request): JsonResponse
     {
@@ -78,6 +105,14 @@ class RoomController extends AbstractController
         }
     }
 
+    /**
+     * Delete a room
+     *
+     * @param int $id
+     * 
+     * @return JsonResponse
+     * 
+     */
     #[Route('/{id}', name: 'delete', methods: ['DELETE'])]
     public function delete(int $id): JsonResponse
     {

@@ -15,6 +15,9 @@ use Symfony\Component\Serializer\SerializerInterface;
 use Symfony\Component\Validator\Validator\ValidatorInterface;
 
 
+/**
+ * [ReservationService] Service class to handle business logic related to Reservation entity
+ */
 class ReservationService
 {
     public function __construct(
@@ -86,6 +89,14 @@ class ReservationService
         return json_decode($serializedData, true);
     }
 
+    /**
+     * Create a new reservation
+     *
+     * @param Request $request
+     * 
+     * @return array
+     * 
+     */
     public function create(Request $request):array
     {
         // Get JSON data from request
@@ -201,6 +212,15 @@ class ReservationService
             return json_decode($data, true);
     }
 
+    /**
+     * Create a new reservation
+     *
+     * @param int $roomId
+     * @param Request $request
+     * 
+     * @return array
+     * 
+     */
     public function listByRoom(int $roomId, Request $request): array
     {
         // Check if room exists

@@ -5,8 +5,17 @@ namespace App\Controller;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\Routing\Attribute\Route;
 
+/**
+ * [HealthController] Simple health check controller
+ */
 class HealthController
 {
+    /**
+     * [HealthController] Simple health check controller
+     *
+     * @return JsonResponse
+     * 
+     */
     #[Route('/', name: 'health_check')]
     public function healthCheck(): JsonResponse
     {
@@ -17,6 +26,12 @@ class HealthController
         ]);
     }
 
+    /**
+     * [HealthController] API health check
+     *
+     * @return JsonResponse
+     * 
+     */
     #[Route('/api/health', name: 'api_health_check')]
     public function apiHealthCheck(): JsonResponse
     {

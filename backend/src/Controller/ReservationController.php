@@ -20,6 +20,14 @@ class ReservationController extends AbstractController
     ) {
     }
 
+    /**
+     * Get a list of reservations
+     *
+     * @param Request $request
+     * 
+     * @return JsonResponse
+     * 
+     */
     #[Route('', name: 'list', methods: ['GET'])]
     public function list(Request $request): JsonResponse
     {
@@ -41,6 +49,14 @@ class ReservationController extends AbstractController
         }
     }
 
+    /**
+     * Create a new reservation
+     *
+     * @param Request $request
+     * 
+     * @return JsonResponse
+     * 
+     */
     #[Route('', name: 'create', methods: ['POST'])]
     public function create(Request $request): JsonResponse
     {
@@ -67,6 +83,15 @@ class ReservationController extends AbstractController
     }
 
     #[Route('/room/{roomId}', name: 'list_by_room', methods: ['GET'])]
+    /**
+     * Get a list of reservations for a specific room
+     *
+     * @param int $roomId
+     * @param Request $request
+     * 
+     * @return JsonResponse
+     * 
+     */
     public function listByRoom(int $roomId, Request $request): JsonResponse
     {
         try {
