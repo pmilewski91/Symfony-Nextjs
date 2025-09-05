@@ -55,9 +55,6 @@ services:
       CORS_ALLOW_ORIGIN: http://localhost:3000
     ports:
       - "8000:8000"
-    volumes:
-      - ./backend:/var/www/html
-      - backend_vendor:/var/www/html/vendor
     depends_on:
       postgres:
         condition: service_healthy
@@ -65,7 +62,6 @@ services:
         condition: service_healthy
     networks:
       - conference_network
-    command: ["php", "-S", "0.0.0.0:8000", "-t", "public"]
 
   # Next.js Frontend
   frontend:
@@ -91,8 +87,6 @@ volumes:
   postgres_data:
     driver: local
   rabbitmq_data:
-    driver: local
-  backend_vendor:
     driver: local
   frontend_node_modules:
     driver: local

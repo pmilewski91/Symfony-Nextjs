@@ -16,7 +16,7 @@ const Loading = ({ size = 'md', className, text }: LoadingProps) => {
   return (
     <div className={cn('flex flex-col items-center justify-center', className)}>
       <svg
-        className={cn('animate-spin text-primary-600', sizes[size])}
+        className={cn('animate-spin text-blue-600', sizes[size])}
         xmlns="http://www.w3.org/2000/svg"
         fill="none"
         viewBox="0 0 24 24"

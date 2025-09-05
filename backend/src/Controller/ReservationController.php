@@ -110,4 +110,29 @@ class ReservationController extends AbstractController
             ], 500);
         }
     }
+
+    #[Route('/{id}', name: 'delete', methods: ['DELETE'])]
+    /**
+     * Delete a reservation
+     *
+     * @param int $id
+     * 
+     * @return JsonResponse
+     * 
+     */
+    public function delete(int $id): JsonResponse
+    {
+        try {
+            $this->reservationService->delete($id);
+            return new JsonResponse(['message' => 'Reservation deleted successfully'], 200);
+
+        } catch (RoomNotFoundException $e) {
+            return $this->json(['error' => 'Reservation not found'], 404);
+        } catch (\Exception $e) {
+            return new JsonResponse([
+                'error' => 'Failed to delete reservation',
+                'message' => $e->getMessage()
+            ], 500);
+        }
+    }
 }

@@ -5,13 +5,15 @@ import { useRouter, useParams } from "next/navigation";
 import { Button, Input, Select, ErrorMessage, Loading } from "@/components/ui";
 import axios from "axios";
 import { Room, ValidationErrors, FormData } from "@/types/interferance";
+import { useNavigationContext } from "@/contexts/NavigationContext";
 
 
 export default function EditRoomPage() {
   const router = useRouter();
+  const { setIsLoading: setNavigationLoading } = useNavigationContext();
   const params = useParams();
   const roomId = params.slug as string;
-  
+
   const [formData, setFormData] = useState<FormData>({
     name: "",
     description: "",
@@ -21,9 +23,7 @@ export default function EditRoomPage() {
   const [isLoading, setIsLoading] = useState(true);
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [errors, setErrors] = useState<ValidationErrors>({});
-  const [generalError, setGeneralError] = useState<string | null>(null);
-
-  // Load room data when component mounts
+  const [generalError, setGeneralError] = useState<string | null>(null);  // Load room data when component mounts
   useEffect(() => {
     const loadRoomData = async () => {
       if (!roomId) return;
@@ -112,6 +112,7 @@ export default function EditRoomPage() {
       });
 
       // Success - redirect to rooms list
+      setNavigationLoading(true);
       router.push("/");
     } catch (err: any) {
       if (err.response?.status === 400 && err.response?.data?.details) {
@@ -130,6 +131,7 @@ export default function EditRoomPage() {
   };
 
   const handleCancel = () => {
+    setNavigationLoading(true);
     router.push("/");
   };
 
@@ -161,7 +163,10 @@ export default function EditRoomPage() {
             <ErrorMessage message={generalError} />
             <div className="mt-4">
               <Button
-                onClick={() => router.push("/")}
+                onClick={() => {
+                  setNavigationLoading(true);
+                  router.push("/");
+                }}
                 className="bg-gray-500 hover:bg-gray-600 text-white px-6 py-2 rounded-md"
               >
                 Powrót do listy sal

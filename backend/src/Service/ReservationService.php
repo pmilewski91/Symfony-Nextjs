@@ -307,4 +307,24 @@ class ReservationService
                 'total_reservations' => count($reservations)
             ];
     }
+
+    /**
+     * Delete a reservation
+     *
+     * @param int $reservationId
+     * 
+     * @return void
+     * 
+     */
+    public function delete(int $reservationId): void
+    {
+        $reservation = $this->reservationRepository->find($reservationId);
+        
+        if (!$reservation) {
+            throw new RoomNotFoundException($reservationId);
+        }
+
+        $this->entityManager->remove($reservation);
+        $this->entityManager->flush();
+    }
 }

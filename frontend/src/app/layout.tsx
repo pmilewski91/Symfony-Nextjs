@@ -1,6 +1,9 @@
 import type { Metadata } from "next";
 import { Inter } from "next/font/google";
 import "./globals.css";
+import Navigation from "@/components/Navigation";
+import { NavigationProvider } from "@/contexts/NavigationContext";
+import NavigationLoadingWrapper from "@/components/NavigationLoadingWrapper";
 
 const inter = Inter({
   subsets: ["latin"],
@@ -23,9 +26,14 @@ export default function RootLayout({
   return (
     <html lang="pl" className="h-full">
       <body className={`${inter.className} h-full bg-gray-50 antialiased`}>
-        <div className="min-h-full">
-          {children}
-        </div>
+        <NavigationProvider>
+          <NavigationLoadingWrapper>
+            <div className="min-h-full">
+              <Navigation />
+              {children}
+            </div>
+          </NavigationLoadingWrapper>
+        </NavigationProvider>
       </body>
     </html>
   );

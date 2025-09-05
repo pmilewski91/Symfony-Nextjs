@@ -5,27 +5,34 @@ import { useRouter } from "next/navigation";
 import { Button } from "@/components/ui";
 import axios from "axios";
 import { Room } from "@/types/interferance";
+import { useNavigationContext } from "@/contexts/NavigationContext";
 
 export default function HomePage() {
   const router = useRouter();
+  const { setIsLoading } = useNavigationContext();
   
 
   const [rooms, setRooms] = useState<Room[]>([]);
-  const [isLoading, setIsLoading] = useState(true);
+  const [isLoadingRooms, setIsLoadingRooms] = useState(true);
   const [isError, setIsError] = useState<string | null>(null);
   const [isDeleting, setIsDeleting] = useState<number | null>(null);
 
-  const fetchRooms = () => {
+  const handleNavigation = (path: string) => {
     setIsLoading(true);
+    router.push(path);
+  };
+
+  const fetchRooms = () => {
+    setIsLoadingRooms(true);
     setIsError(null);
     axios.get('http://localhost:8000/api/v1/rooms')
       .then(res => {
         setRooms(res.data);
-        setIsLoading(false);
+        setIsLoadingRooms(false);
       })
       .catch(err => {
         setIsError(err?.message || 'Błąd pobierania sal');
-        setIsLoading(false);
+        setIsLoadingRooms(false);
       });
   };
 
@@ -70,7 +77,7 @@ export default function HomePage() {
         </div>
 
         <div className="p-6">
-          {isLoading ? (
+          {isLoadingRooms ? (
             <div className="py-10 text-center text-blue-600">Ładowanie sal…</div>
           ) : isError ? (
             <div className="py-10 text-center">
@@ -112,7 +119,10 @@ export default function HomePage() {
                             </td>
                             <td className="px-6 py-4 whitespace-nowrap text-center space-x-2">
                               {room.isActive ? (
-                                <Button className="bg-green-600 hover:bg-green-700 text-white px-4 py-2 rounded-md" disabled={false}>
+                                <Button 
+                                  className="bg-green-600 hover:bg-green-700 text-white px-4 py-2 rounded-md"
+                                  onClick={() => handleNavigation(`/calendar?room=${room.id}`)}
+                                >
                                   Rezerwuj
                                 </Button>
                               ) : (
@@ -122,7 +132,7 @@ export default function HomePage() {
                               )}
                               <Button 
                                 className="bg-blue-700 hover:bg-blue-800 text-white px-4 py-2 rounded-md"
-                                onClick={() => router.push(`/rooms/${room.id}/edit`)}
+                                onClick={() => handleNavigation(`/rooms/${room.id}/edit`)}
                               >
                                 Edytuj
                               </Button>
@@ -171,7 +181,10 @@ export default function HomePage() {
                             </div>
                             <div className="mt-3 space-y-2 space-x-2">
                               {room.isActive ? (
-                                <Button className="bg-green-600 hover:bg-green-700 text-white px-3 py-1 rounded-md" disabled={false}>
+                                <Button 
+                                  className="bg-green-600 hover:bg-green-700 text-white px-3 py-1 rounded-md"
+                                  onClick={() => handleNavigation(`/calendar?room=${room.id}`)}
+                                >
                                   Rezerwuj
                                 </Button>
                               ) : (
@@ -181,7 +194,7 @@ export default function HomePage() {
                               )}
                               <Button 
                                 className="bg-blue-700 hover:bg-blue-800 text-white px-4 py-2 rounded-md"
-                                onClick={() => router.push(`/rooms/${room.id}/edit`)}
+                                onClick={() => handleNavigation(`/rooms/${room.id}/edit`)}
                               >
                                 Edytuj
                               </Button>
@@ -207,7 +220,7 @@ export default function HomePage() {
         </div>
         <Button 
           className="bg-blue-700 hover:bg-blue-800 text-white px-4 py-2 rounded-md mx-2 my-2"
-          onClick={() => router.push("/rooms/create")}
+          onClick={() => handleNavigation("/rooms/create")}
         >
           Dodaj salę
         </Button>

@@ -33,21 +33,17 @@ COPY --from=composer:latest /usr/bin/composer /usr/bin/composer
 # Set working directory
 WORKDIR /var/www/html
 
-# Copy application code first
+# Copy application code
 COPY . .
 
-# Install PHP dependencies (ensure all dependencies are installed)
-RUN composer install --optimize-autoloader --no-interaction --prefer-dist
+# Install dependencies
+RUN composer install --optimize-autoloader --no-interaction --prefer-dist --no-scripts
 
-# Set permissions
-RUN chown -R www-data:www-data /var/www/html/var || true
-RUN chmod -R 775 /var/www/html/var || true
-
-# Create SQLite database directory
-RUN mkdir -p /var/www/html/var && chown -R www-data:www-data /var/www/html/var
+# Set proper permissions
+RUN chmod +x start.sh
 
 # Expose port
 EXPOSE 8000
 
-# Start PHP built-in server
-CMD ["php", "-S", "0.0.0.0:8000", "-t", "public"]
+# Use our automation script
+CMD ["./start.sh"]

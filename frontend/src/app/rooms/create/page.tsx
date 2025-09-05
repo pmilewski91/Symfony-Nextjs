@@ -5,9 +5,11 @@ import { useRouter } from "next/navigation";
 import { Button, Input, Select, ErrorMessage } from "@/components/ui";
 import axios from "axios";
 import { ValidationErrors, FormData } from "@/types/interferance";
+import { useNavigationContext } from "@/contexts/NavigationContext";
 
 export default function CreateRoomPage() {
   const router = useRouter();
+  const { setIsLoading } = useNavigationContext();
   
   const [formData, setFormData] = useState<FormData>({
     name: "",
@@ -76,6 +78,7 @@ export default function CreateRoomPage() {
       });
 
       // Success - redirect to rooms list
+      setIsLoading(true);
       router.push("/");
     } catch (err: any) {
       if (err.response?.status === 400 && err.response?.data?.details) {
@@ -92,6 +95,7 @@ export default function CreateRoomPage() {
   };
 
   const handleCancel = () => {
+    setIsLoading(true);
     router.push("/");
   };
 

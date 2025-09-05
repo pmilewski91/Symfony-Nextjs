@@ -50,12 +50,14 @@ class RoomService
         return $data;
     }
 
+
     /**
      * Get a single room by ID
+     *
+     * @param int $id
      * 
-     * @param int $id Room ID
-     * @return string JSON serialized room data
-     * @throws RoomNotFoundException
+     * @return string
+     * 
      */
     public function getById(int $id): string
     {
